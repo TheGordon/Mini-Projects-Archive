@@ -1,3 +1,13 @@
+//This file
+/* This file implements all the tools to manipulate the files.
+*The tools include:
+*   - Reading a file
+*   - Retrieving data
+*   - Adding data
+*   - Removing data
+*   - Printing the data in tabular format
+*   - Saving the modiifed data into a new local file
+*/
 import java.io.*;  
 import java.util.Scanner;
 import java.util.Arrays;
@@ -125,7 +135,7 @@ public class PersonDataManager{
        } 
        if(!elementExists) throw new PersonDoesNotExistsException("This Person doesn't exist");
     }
-	//Removes a person to the bag
+	//Removes a person from the array
     public void removePerson (String name) throws PersonDoesNotExistsException{
         Boolean elementExists = false;
         
@@ -179,7 +189,7 @@ public class PersonDataManager{
     }
 //Debugging
     public static void main(String[] args) {
-        buildFromFile("biostatsTest.csv");            
+        buildFromFile("biostats.csv");            
         Person newPerson = new Person("Alexa", "M", 41, 74, 170);
         PersonDataManager test = new PersonDataManager();
         
