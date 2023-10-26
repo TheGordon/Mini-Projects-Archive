@@ -1,3 +1,4 @@
+//This file implements the UI for the data manipulator.
 import java.util.InputMismatchException;
 
 import java.util.Scanner;
