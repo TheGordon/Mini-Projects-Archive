@@ -1,3 +1,4 @@
+//This class carries the information from a table row for a "Person's" data attributes.
 public class Person {
     private int age;
     private double height;
