@@ -1,3 +1,6 @@
+//SecurityManager essentially manages the "Lines' linkedlist into another linked list.
+//It's functionality includes adding and removing attendees and lines while maintaining each line having the roughly the same amount of persons.
+
 import java.util.Arrays;
 
 class TakenSeatException extends Exception {
@@ -46,7 +49,7 @@ class SecurityCheck{
         lineCount = 0;
     }
 
-    //Adds person to a line while maintaining line length to be balanced
+    //Adds person to a line while maintaining line length to be balanced for each of the lines
     public void addPerson(String Name, int seatNumber) throws TakenSeatException{
         cursorLine = headLine;
         boolean insertion = false;
@@ -92,7 +95,7 @@ class SecurityCheck{
 
     //Adds x amount of new lines
     //The strategy here is to unload all the data onto a singular "dummy" storage variable,
-    //add the new lines in, and then unload all the data from the storage variable back into the rest of the linkedlist
+    //add the new lines in, and then unload all the data from the storage variable back into the rest of the SecurityManager linkedlist
     public void addNewLines(int newLines) throws InvalidLineCountException {
         if (newLines < 0) throw new InvalidLineCountException("The number of new lines cannot be negative.");
 
@@ -138,7 +141,7 @@ class SecurityCheck{
         lineCount += newLines;
     }
 
-    //Removes certain lines according to parameter input
+    //Removes certain lines according to parameter input while re-consolidating the leftover Persons from the removed lines back into all the other lines
     public void removeLines(int[] removedLines) throws LineDoesNotExistException, SingleLineRemovalException{
 
         //Checks for throw exceptions
