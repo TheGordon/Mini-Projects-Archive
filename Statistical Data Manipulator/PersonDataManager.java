@@ -6,7 +6,7 @@
 *   - Adding data
 *   - Removing data
 *   - Printing the data in tabular format
-*   - Saving the modiifed data into a new local file
+*   - Saving the modified data into a new local file
 */
 import java.io.*;  
 import java.util.Scanner;
