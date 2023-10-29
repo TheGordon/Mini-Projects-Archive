@@ -9,7 +9,7 @@ public class SecurityManager {
         String option = "";
 
         System.out.println("\nStarting...");
-        while (option != "Q") {
+        while (!option.equals("Q")) {
             System.out.println("\n");
             manager.lineCheck();
             System.out.println("\n");
@@ -92,7 +92,6 @@ public class SecurityManager {
                     case "Q":
                         System.out.println("Goodbye!");
                         System.out.println(option);
-                        option = "Q";
                         break;
 
                     default:
