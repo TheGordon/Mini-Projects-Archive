@@ -27,7 +27,6 @@ class LineDoesNotExistException extends Exception {
 	}
 }
 
-
 class SingleLineRemovalException extends Exception {
 	public SingleLineRemovalException (String msg) {
 		super(msg);
@@ -40,29 +39,34 @@ class SecurityCheck{
     private Line tailLine;
     private Line cursorLine;
     private int lineCount;
+    private int lineChanged;
 
     //Constructor
     public SecurityCheck(){
-        headLine = null;
-        tailLine = null;
-        cursorLine = null;
-        lineCount = 0;
+        headLine = new Line();
+        tailLine = headLine;
+        cursorLine = headLine;
+        lineCount = 1;
     }
 
-    //Adds person to a line while maintaining line length to be balanced for each of the lines
+    public int getLineChanged(){return lineChanged;}
+    public Line getHeadLine(){return headLine;}
+
+    //Adds person to a line while maintaining line length to be balanced
     public void addPerson(String Name, int seatNumber) throws TakenSeatException{
-        cursorLine = headLine;
         boolean insertion = false;
+        int i = 1;
 
-        while(cursorLine != null){
-            if(cursorLine.listSearch(seatNumber) == true) throw new TakenSeatException("Seat is already taken.");
-
+        for(cursorLine = headLine; cursorLine != null; cursorLine = cursorLine.getLineLink()){
+            if(cursorLine.listSearch(seatNumber) || (cursorLine.getLineLink() != null && cursorLine.getLineLink().listSearch((seatNumber))))
+                throw new TakenSeatException("Seat is already taken.");
+        
             if((insertion == false) && (cursorLine.getLineLink() == null || cursorLine.getLength() < cursorLine.getLineLink().getLength())){
                 cursorLine.addPerson(new Person(Name, seatNumber));
                 insertion = true;
+                lineChanged = i;
             }
-
-            cursorLine = cursorLine.getLineLink();
+            i++;
         }
 
     }
@@ -73,16 +77,21 @@ class SecurityCheck{
         
         Line removedAtLine = headLine;
         Person removedPerson;
+        int i = 1;
 
         //Goes through the linkedlist to find the longest line(s) then removes the lowest seat number
         for(cursorLine = headLine.getLineLink(); cursorLine != null; cursorLine = cursorLine.getLineLink()){
-            if(removedAtLine.getLength() < cursorLine.getLength()) removedAtLine = cursorLine;
-            
+            if(removedAtLine.getLength() < cursorLine.getLength()){
+                removedAtLine = cursorLine;
+                lineChanged = i;
+            }
             if((removedAtLine.getLength() != 0 || cursorLine.getLength() != 0)
             && removedAtLine.getLength() == cursorLine.getLength()
-            && removedAtLine.getHeadPerson().getSeatNumber() > cursorLine.getHeadPerson().getSeatNumber())
+            && removedAtLine.getHeadPerson().getSeatNumber() > cursorLine.getHeadPerson().getSeatNumber()){
                 removedAtLine = cursorLine;
-            
+                lineChanged = i;
+            }
+            i++;
         }
 
         if(removedAtLine == headLine && headLine.getLength() == 0) throw new AllLinesEmptyException("All lines are empty.");
@@ -95,7 +104,7 @@ class SecurityCheck{
 
     //Adds x amount of new lines
     //The strategy here is to unload all the data onto a singular "dummy" storage variable,
-    //add the new lines in, and then unload all the data from the storage variable back into the rest of the SecurityManager linkedlist
+    //add the new lines in, and then unload all the data from the storage variable back into the rest of the linkedlist
     public void addNewLines(int newLines) throws InvalidLineCountException {
         if (newLines < 0) throw new InvalidLineCountException("The number of new lines cannot be negative.");
 
@@ -141,17 +150,19 @@ class SecurityCheck{
         lineCount += newLines;
     }
 
-    //Removes certain lines according to parameter input while re-consolidating the leftover Persons from the removed lines back into all the other lines
+    //Removes certain lines according to parameter input
     public void removeLines(int[] removedLines) throws LineDoesNotExistException, SingleLineRemovalException{
 
         //Checks for throw exceptions
-        if (removedLines.length == 1 && lineCount == 1) {
-            throw new SingleLineRemovalException("Cannot remove the only available line.");
-        }
         for (int lineIndex : removedLines) {
             if (lineIndex < 1 || lineIndex > lineCount)
                 throw new LineDoesNotExistException("Line " + lineIndex + " does not exist.");
         }
+
+        if (removedLines.length == 1 && lineCount == 1) {
+            throw new SingleLineRemovalException("Cannot remove the only available line.");
+        }
+        
 
         //pointer variables, a wrapper class variable, and a storage variable
         Line ptr = headLine;
@@ -208,23 +219,32 @@ class SecurityCheck{
         int i = 1;
         for(Line ptr = headLine; ptr != null; ptr = ptr.getLineLink()){
             for(Person ptr2 = ptr.getHeadPerson(); ptr2 != null; ptr2 = ptr2.getNextPerson())
-                System.out.println("|\t " + i + "\t |      "
+                System.out.println("|\t " + i + "\t |\t"
                                     + ptr2.getName() + "\t |\t "
                                     + ptr2.getSeatNumber() + "\t|");
             i++;
         }
+    }
 
-
+    //Prints how many people are in each line
+    public void lineCheck(){
+        
+        int i = 1;
+        for(cursorLine = headLine; cursorLine != null; cursorLine = cursorLine.getLineLink()){
+            
+            System.out.print("Line " + i + ": " + cursorLine.getLength());
+            if(cursorLine.getLength() == 1) System.out.println(" Person Waiting");
+            else System.out.println(" People Waiting");
+            i++;
+        }
     }
     
-
-
     //debugging
     public static void main (String [] args){
         SecurityCheck a = new SecurityCheck();
-
+        System.out.println(a.headLine.getLength());
         try{
-
+            
             a.addNewLines(3);
             a.addPerson("Yo1", 1);
             a.addPerson("Yo2", 2);
@@ -276,16 +296,8 @@ class SecurityCheck{
         catch(LineDoesNotExistException e){System.out.println(e);}
         catch(SingleLineRemovalException e){System.out.println(e);}
         //catch(AllLinesEmptyException e){}
-
+        a.lineCheck();
         a.printTable();
-        
-
-
-
-
-
-
-
 
     }
 
