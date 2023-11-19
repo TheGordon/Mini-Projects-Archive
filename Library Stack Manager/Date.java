@@ -1,3 +1,4 @@
+//Simple Date Class that keeps track of a date
 public class Date {
     // Private instance variables to store day, month, and year.
     private int day;
