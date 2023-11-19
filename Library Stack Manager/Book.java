@@ -1,3 +1,4 @@
+
 public class Book {
     // Private instance variables to store book information.
     private String name;
@@ -12,10 +13,10 @@ public class Book {
     private boolean checkedOut;
 
     // Enum for book condition.
+    
     public enum Condition {
         New, Good, Bad, Replace
     }
-
     //Default constructor for a book. Initializes values to default values.
     public Book() {
         this.name = "";
@@ -31,20 +32,16 @@ public class Book {
     }
 
     //Constructor with parameters to set book information.
-    public Book(String name, String author, String genre, Condition condition, long ISBN, long checkOutUserID,
-                int yearPublished, Date checkOutDate, Book nextBook, boolean checkedOut) {
+    public Book(long ISBN, String name, String author, String genre, int yearPublished, Condition condition) {
         this.name = name;
         this.author = author;
         this.genre = genre;
         this.bookCondition = condition;
         this.ISBN = ISBN;
-        this.checkOutUserID = checkOutUserID;
         this.yearPublished = yearPublished;
-        this.checkOutDate = checkOutDate;
-        this.nextBook = nextBook;
-        this.checkedOut = checkedOut;
     }
 
+    
     // Getter and setter methods for all member variables.
     public String getName() {return name;}
     public void setName(String name) {this.name = name;}
@@ -66,4 +63,8 @@ public class Book {
     public void setNextBook(Book nextBook) {this.nextBook = nextBook;}
     public boolean isCheckedOut() {return checkedOut;}
     public void setCheckedOut(boolean checkedOut) {this.checkedOut = checkedOut;}
+
+    public static void main(String[] args) {
+        System.out.println(Condition.New + "");
+    }
 }
