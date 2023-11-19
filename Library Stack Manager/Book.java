@@ -1,4 +1,4 @@
-
+//Simple book node containing all the data for a book
 public class Book {
     // Private instance variables to store book information.
     private String name;
