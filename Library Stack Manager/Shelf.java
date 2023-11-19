@@ -123,11 +123,9 @@ public class Shelf {
 
     //Converts the shelf's data to a tabular string form.
     @Override
-    public String toString() {
-        // Implementation to convert the shelf's data to a tabular string form.        
-       
-        System.out.println("| \tName\t | \tAuthor\t | \tGenre\t | \tBook Condition\t | \tISBN\t | \tCheckout User ID\t | \tYear Published\t | \tCheckout Date\t |\t Checkedout\t |");
-        System.out.println(" =====================================================================================================================================================");
+    public String toString() {        
+        System.out.println("| \tName\t | \tAuthor\t | \tGenre\t | \tBook Condition\t | \tISBN\t | \tCheckout User ID\t | \tYear Published\t | \tCheckout Date\t |\t Checkedout");
+        System.out.println(" ===================================================================================================================================================================================================");
         
         for(Book ptr = headBook; ptr != null; ptr = ptr.getNextBook()){
             String newISBN = "" + ptr.getISBN();
@@ -143,9 +141,8 @@ public class Shelf {
             System.out.print(ptr.getCheckOutUserID() + "\t|\t");
             System.out.print(ptr.getYearPublished() + "\t|\t");
             System.out.print(ptr.getCheckOutDate() + "\t|\t");
-            System.out.println(ptr.isCheckedOut() + "\t|");
+            System.out.println(ptr.isCheckedOut());
         }
-
         return "";
     }
 
