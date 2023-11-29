@@ -1,3 +1,5 @@
+//The user interface for managing the BookRepository and ReturnStack.
+
 import java.util.Scanner;
 
 public class LibraryManager {
