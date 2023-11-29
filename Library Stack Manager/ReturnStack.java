@@ -1,3 +1,5 @@
+//A stack that implements a stack using linkedlists of ReturnLog.
+
 class InvalidReturnDateException extends Exception {}
 class BookNotCheckedOutException extends Exception {}
 class BookCheckedOutBySomeoneElseException extends Exception{}
