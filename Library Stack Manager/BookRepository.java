@@ -1,5 +1,8 @@
-//A class that managaes all the functionalities for the book shelves, including:
-//Checking in and out books, adding books, and removing books, and sorting books.
+/* A class that 10 shelves of books.
+* Books are stored in each shelf according to the first digit of their ISBN. So a book with an ISBN of 1293847584937 would be stored in shelf 1.
+* The functionalities include checking in and out books, adding books, and removing books, and sorting books.
+*/
+
 class InvalidUserIDException extends Exception {}
 class BookAlreadyCheckedOutException extends Exception {}
 class InvalidSortCriteraException extends Exception{}
