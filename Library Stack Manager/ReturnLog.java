@@ -1,3 +1,4 @@
+//A log node that keeps track of book returns
 public class ReturnLog {
     // Private instance variables to store return log information.
     private long ISBN;
