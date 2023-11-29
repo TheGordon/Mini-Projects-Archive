@@ -10,7 +10,7 @@ public class Date {
     public Date() {
         this.day = 1;
         this.month = 1;
-        this.year = 2000;
+        this.year = 1;
     }
 
     public Date(int day, int month, int year) {
@@ -20,7 +20,6 @@ public class Date {
     }
 
     //Compares two Date objects chronologically.
-     
     public static int compare(Date x, Date y) {
         if (x.year < y.year) return -1;
         else if (x.year > y.year) return 1;
@@ -35,6 +34,15 @@ public class Date {
         }
     }
 
+    @Override
+    public String toString() {
+        if(month < 10 && day < 10) return "0" + month + "/" + "0" + day + "/" + year;
+        if(month < 10) return "0" + month + "/" + day + "/" + year;
+        if(day < 10) return month + "/" + "0" + day + "/" + year; 
+        return month + "/" + day + "/" + year;
+
+    }
+
     // Getter and setter methods for day, month, and year.
     public int getDay() {return day;}
     public void setDay(int day) {this.day = day;}
@@ -44,7 +52,8 @@ public class Date {
     public void setYear(int year) {this.year = year;}
 
     public static void main(String[] args) {
-        System.out.println(compare(new Date(0,1,2000), new Date()));
+        System.out.println(compare(new Date(03,1,2000), new Date()));
+        System.out.println(new Date(03,41,2000));
     }
 
 }
