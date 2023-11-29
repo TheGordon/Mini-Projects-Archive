@@ -1,4 +1,5 @@
-//A class that managaes all the functionalities for the book shelves.
+//A class that managaes all the functionalities for the book shelves, including:
+//Checking in and out books, adding books, and removing books, and sorting books.
 class InvalidUserIDException extends Exception {}
 class BookAlreadyCheckedOutException extends Exception {}
 class InvalidSortCriteraException extends Exception{}
