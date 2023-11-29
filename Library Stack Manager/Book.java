@@ -9,26 +9,28 @@ public class Book {
     private long checkOutUserID;
     private int yearPublished;
     private Date checkOutDate;
+    private Date dueDate;
     private Book nextBook;
     private boolean checkedOut;
 
     // Enum for book condition.
-    
     public enum Condition {
         New, Good, Bad, Replace
     }
+
     //Default constructor for a book. Initializes values to default values.
     public Book() {
         this.name = "";
         this.author = "";
         this.genre = "";
         this.bookCondition = Condition.New; // Default condition
-        this.ISBN = 0L;
-        this.checkOutUserID = 0L;
-        this.yearPublished = 0;
+        this.ISBN = -1L;
+        this.checkOutUserID = -1L;
+        this.yearPublished = -1;
         this.checkOutDate = new Date();
         this.nextBook = null;
         this.checkedOut = false;
+        this.dueDate = new Date();
     }
 
     //Constructor with parameters to set book information.
@@ -39,6 +41,7 @@ public class Book {
         this.bookCondition = condition;
         this.ISBN = ISBN;
         this.yearPublished = yearPublished;
+        this.checkOutUserID = -1L;
     }
 
     
@@ -63,6 +66,8 @@ public class Book {
     public void setNextBook(Book nextBook) {this.nextBook = nextBook;}
     public boolean isCheckedOut() {return checkedOut;}
     public void setCheckedOut(boolean checkedOut) {this.checkedOut = checkedOut;}
+    public Date getDueDate(){return dueDate;}
+    public void setDueDate(Date dueDate){this.dueDate = dueDate;}
 
     public static void main(String[] args) {
         System.out.println(Condition.New + "");
