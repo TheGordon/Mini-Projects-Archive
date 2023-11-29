@@ -49,6 +49,7 @@ public class Shelf {
     // Removes the book with the specified ISBN from the shelf.
     public void removeBook(String removedISBN) throws InvalidISBNException, BookDoesNotExistException {
         if(removedISBN.length() > 13) throw new InvalidISBNException(); 
+        if(length == 0) throw new BookDoesNotExistException();
 
         long lISBN = Long.parseLong(removedISBN);
         Book ptr = headBook;
@@ -56,11 +57,12 @@ public class Shelf {
         if(headBook.getISBN() == lISBN){
             headBook = headBook.getNextBook();
             length--;
+            if(headBook == null) tailBook = null;
             return;
         }
-        while(ptr != tailBook && !(ptr.getNextBook().getISBN() == lISBN)){
+        while(ptr != tailBook && !(ptr.getNextBook().getISBN() == lISBN))
             ptr = ptr.getNextBook();
-        }
+        
         if(ptr == tailBook) throw new BookDoesNotExistException();
 
         ptr.setNextBook(ptr.getNextBook().getNextBook());
@@ -121,27 +123,79 @@ public class Shelf {
         }
     }
 
+    //Searches through the shelf and returns the book
+    public Book getBook(long ISBN){
+
+        for(Book ptr = headBook; ptr != null; ptr = ptr.getNextBook()){
+            if(ptr.getISBN() == ISBN) return ptr;
+        }
+        return null;
+    }
+
     //Converts the shelf's data to a tabular string form.
     @Override
-    public String toString() {        
-        System.out.println("| \tName\t | \tAuthor\t | \tGenre\t | \tBook Condition\t | \tISBN\t | \tCheckout User ID\t | \tYear Published\t | \tCheckout Date\t |\t Checkedout");
-        System.out.println(" ===================================================================================================================================================================================================");
+    public String toString() {
+
+        switch(shelfSortCriteria){
+            case ISBN:
+                System.out.print("| \tISBN\t |");
+                break;
+            case Name:
+                System.out.print("| \tName\t |");
+                break;
+            case Author:
+                System.out.print("| \tAuthor\t |");
+                break;
+            case Genre:
+                System.out.print("| \tGenre\t |");
+                break;
+            case Year:
+                System.out.print("| \tYear\t |");
+                break;
+            case Condition:
+                System.out.print("| \tCondition\t |");
+                break;
+        }
+
+        System.out.println(" \tChecked Out\t | \tCheck Out Date\t |    Checkout UserID\t|\t Due Date");
+        System.out.println(" =====================================================================================================================");
         
         for(Book ptr = headBook; ptr != null; ptr = ptr.getNextBook()){
-            String newISBN = "" + ptr.getISBN();
-            for(int i = 0; i < 13 - String.valueOf(ptr.getISBN()).length() ; i++)
-                newISBN = "0" + newISBN;
 
-            System.out.print("|\t");
-            System.out.print(ptr.getName() + "\t|\t");
-            System.out.print(ptr.getAuthor() + "\t|\t");
-            System.out.print(ptr.getGenre() + "\t|\t");
-            System.out.print(ptr.getBookCondition() + "\t|\t");
-            System.out.print(newISBN + "\t|\t");
-            System.out.print(ptr.getCheckOutUserID() + "\t|\t");
-            System.out.print(ptr.getYearPublished() + "\t|\t");
-            System.out.print(ptr.getCheckOutDate() + "\t|\t");
-            System.out.println(ptr.isCheckedOut());
+            switch(shelfSortCriteria){
+                case ISBN:
+                    System.out.print("| ");
+                    System.out.printf("%0 14d", ptr.getISBN());
+                    System.out.print(" |\t");
+                    break;
+                case Name:
+                    System.out.print("|\t" + ptr.getName() + "\t|\t");
+                    break;
+                case Author:
+                    System.out.print("|\t" + ptr.getAuthor() + "\t |\t");
+                    break;
+                case Genre:
+                    System.out.print("|\t" + ptr.getGenre() + "    |\t");
+                    break;
+                case Year:
+                    System.out.print("|\t" + ptr.getYearPublished() + "\t |\t");
+                    break;
+                case Condition:
+                    System.out.print("|     " + "\t"+ ptr.getBookCondition() + "\t         |\t");
+                    break;
+        }
+            if(ptr.isCheckedOut()) System.out.print("      Y          |\t");
+            else System.out.print("      N          |\t");
+
+            if(ptr.getCheckOutDate() == null) System.out.print("    N/A   \t |\t");
+            else System.out.print(ptr.getCheckOutDate() + "\t|\t   ");
+            
+            if(ptr.getCheckOutUserID() == -1) System.out.print("    N/A   \t|\t");
+            else System.out.print("    " + ptr.getCheckOutUserID() + "   \t|\t");
+
+            if(ptr.getDueDate() == null) System.out.println("    N/A");
+            else System.out.println(ptr.getDueDate());
+        
         }
         return "";
     }
@@ -169,12 +223,12 @@ public class Shelf {
             System.out.println("length: " + a.length);
 
             a.sort(SortCriteria.Author);
-            a.addBook(new Book(1, "x1G","xauthor1","xtest", 1, Book.Condition.Good));
-            a.addBook(new Book(6, "g6B","gauthor1","gtest", 6, Book.Condition.Bad));
-            a.addBook(new Book(8, "c8G","cauthor1","ctest", 8, Book.Condition.Good));
-            a.addBook(new Book(5, "a5B","aauthor1","atest", 5, Book.Condition.Bad));
-            a.addBook(new Book(9, "b9R","bauthor1","btest", 9, Book.Condition.Replace));
-            a.addBook(new Book(2, "z2N","zauthor1","ztest", 2, Book.Condition.New));
+            a.addBook(new Book(1, "x1G","xau1","xtest", 1, Book.Condition.Good));
+            a.addBook(new Book(6, "g6B","gau1","gtest", 6, Book.Condition.Bad));
+            a.addBook(new Book(8, "c8G","cau1","ctest", 8, Book.Condition.Good));
+            a.addBook(new Book(5, "a5B","aau1","atest", 5, Book.Condition.Bad));
+            a.addBook(new Book(9, "b9R","bau1","btest", 9, Book.Condition.Replace));
+            a.addBook(new Book(2, "z2N","zau1","ztest", 2, Book.Condition.New));
             
             System.out.println(a);
             System.out.println("length: " + a.length);
@@ -184,6 +238,23 @@ public class Shelf {
         
             System.out.println("length: " + a.length);
             System.out.println(a);
+
+            Book test = a.getBook(9);
+            test.setAuthor("testing"); 
+            System.out.println(a);
+
+            a.sort(SortCriteria.Year);
+            System.out.println(a);
+
+            a.sort(SortCriteria.Name);
+            System.out.println(a);
+            
+
+            a.removeBook("1");
+            a.sort(SortCriteria.ISBN);
+
+           System.out.println(a);
+
 
         }catch(BookAlreadyExistsException e){
             System.out.println("e1");
